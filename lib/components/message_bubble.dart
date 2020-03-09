@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class MessageBubble extends StatelessWidget {
   final String text;
   final String sender;
+  final int timestamp;
   final bool isFromCurrentUser;
 
-  MessageBubble({this.text, this.sender, this.isFromCurrentUser});
+  MessageBubble(
+      {this.text, this.sender, this.timestamp, this.isFromCurrentUser});
 
   @override
   Widget build(BuildContext context) {
