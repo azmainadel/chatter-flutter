@@ -5,7 +5,7 @@ class RoundedButton extends StatelessWidget {
   String buttonText;
   Function onPressed;
 
-  RoundedButton({this.buttonColor, this.buttonText, this.onPressed});
+  RoundedButton({this.buttonColor, this.buttonText, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,9 @@ class RoundedButton extends StatelessWidget {
           height: 42.0,
           child: Text(
             buttonText,
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       ),
