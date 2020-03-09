@@ -9,6 +9,8 @@ import '../constants.dart';
 final _firestore = Firestore.instance;
 final _auth = FirebaseAuth.instance;
 
+FirebaseUser loggedInUser;
+
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
 
@@ -18,8 +20,6 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
-
-  FirebaseUser loggedInUser;
   String messageText;
 
   @override
@@ -43,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Navigator.pop(context);
               }),
         ],
-        title: Text('Chat'),
+        title: Text('Chatroom'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
@@ -117,17 +117,19 @@ class MessageStream extends StatelessWidget {
           for (var message in messagesFromFirestore) {
             final messageText = message.data['text'];
             final messageSender = message.data['sender'];
+            final currentUser = loggedInUser.email;
 
             final messageBubble = MessageBubble(
               text: messageText,
               sender: messageSender,
+              isFromCurrentUser: currentUser == messageSender,
             );
             messageBubbleList.add(messageBubble);
           }
 
           return Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               children: messageBubbleList,
             ),
           );
