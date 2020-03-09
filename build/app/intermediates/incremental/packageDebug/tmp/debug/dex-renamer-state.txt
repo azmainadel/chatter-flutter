@@ -1,7 +1,10 @@
-#Mon Mar 09 10:36:15 BDT 2020
-base.0=/home/azmain/Personal/chatter-flutter/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+#Mon Mar 09 15:14:37 BDT 2020
+path.2=classes3.dex
 path.1=classes2.dex
-renamed.1=classes2.dex
 path.0=classes.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
 renamed.0=classes.dex
+base.2=/home/azmain/Personal/chatter-flutter/build/app/intermediates/dex/debug/mergeDexDebug/out/classes3.dex
 base.1=/home/azmain/Personal/chatter-flutter/build/app/intermediates/dex/debug/mergeDexDebug/out/classes2.dex
+base.0=/home/azmain/Personal/chatter-flutter/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
