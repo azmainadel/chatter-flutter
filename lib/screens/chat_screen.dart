@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../constants.dart';
 
@@ -53,20 +54,25 @@ class _ChatScreenState extends State<ChatScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final messagesFromFirestore = snapshot.data.documents;
-                  List<Text> messageWidgets = [];
+                  List<MessageBubble> messageBubbleList = [];
 
                   for (var message in messagesFromFirestore) {
                     final messageText = message.data['text'];
                     final messageSender = message.data['sender'];
 
-                    final messageWidget =
-                        Text('$messageText from  $messageSender');
-
-                    messageWidgets.add(messageWidget);
+                    final messageBubble = MessageBubble(
+                      text: messageText,
+                      sender: messageSender,
+                    );
+                    messageBubbleList.add(messageBubble);
                   }
 
-                  return Column(
-                    children: messageWidgets,
+                  return Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 20.0),
+                      children: messageBubbleList,
+                    ),
                   );
                 } else {
                   return Center(
@@ -126,12 +132,53 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void getMessages() async {
+/*  void getMessages() async {
     try {
       await for (var snapshot
           in _firestore.collection('messages').snapshots()) {}
     } catch (e) {
       print(e);
     }
+  }*/
+}
+
+class MessageBubble extends StatelessWidget {
+  final String text;
+  final String sender;
+
+  MessageBubble({this.text, this.sender});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Material(
+            borderRadius: BorderRadius.circular(30.0),
+            elevation: 6.0,
+            color: Colors.lightBlueAccent,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: Text(
+                '$text',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 4.0,
+          ),
+          Text(
+            'From $sender',
+            style: TextStyle(fontSize: 12.0, color: Colors.black54),
+          ),
+        ],
+      ),
+    );
   }
 }
