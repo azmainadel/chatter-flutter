@@ -1,4 +1,4 @@
-#Mon Mar 09 10:57:41 BDT 2020
+#Mon Mar 09 12:03:33 BDT 2020
 base.0=/home/azmain/Personal/chatter-flutter/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
 path.1=classes2.dex
 renamed.1=classes2.dex
