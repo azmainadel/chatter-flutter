@@ -9,10 +9,10 @@ abstract class AuthenticationState extends Equatable {
 
 class Unregistered extends AuthenticationState {}
 
-class SignedIn extends AuthenticationState {
+class Authenticated extends AuthenticationState {
   final String userName;
 
-  const SignedIn(this.userName);
+  const Authenticated(this.userName);
 
   @override
   List<Object> get props => [userName];
@@ -21,4 +21,4 @@ class SignedIn extends AuthenticationState {
   String toString() => '$userName signed in';
 }
 
-class SignedOut extends AuthenticationState {}
+class Unauthenticated extends AuthenticationState {}
