@@ -1,4 +1,4 @@
-import 'package:Chatter/components/rounded_button.dart';
+import 'package:chatter/ui/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 import 'login_screen.dart';

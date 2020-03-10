@@ -1,19 +1,19 @@
-import 'package:Chatter/components/rounded_button.dart';
+import 'package:chatter/ui/components/rounded_button.dart';
+import 'package:chatter/ui/util/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-import '../constants.dart';
 import 'chat_screen.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  static String id = 'registration_screen';
+class LoginScreen extends StatefulWidget {
+  static String id = 'login_screen';
 
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
 
   bool showSpinner = false;
@@ -74,15 +74,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 24.0,
               ),
               RoundedButton(
-                  buttonColor: Colors.blueAccent,
-                  buttonText: 'Register',
+                  buttonColor: Colors.lightBlueAccent,
+                  buttonText: 'Log In',
                   onPressed: () async {
                     setState(() {
                       showSpinner = true;
                     });
 
                     try {
-                      final user = await _auth.createUserWithEmailAndPassword(
+                      final user = await _auth.signInWithEmailAndPassword(
                         email: email,
                         password: password,
                       );
