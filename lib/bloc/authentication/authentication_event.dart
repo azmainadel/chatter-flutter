@@ -1,4 +1,3 @@
-import 'package:chatter/bloc/authentication/authentication_state.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthenticationEvent extends Equatable {
@@ -8,8 +7,8 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class Unregistered extends AuthenticationState {}
+class Unregistered extends AuthenticationEvent {}
 
-class SignedIn extends AuthenticationState {}
+class SignedIn extends AuthenticationEvent {}
 
-class SignedOut extends AuthenticationState {}
+class SignedOut extends AuthenticationEvent {}
