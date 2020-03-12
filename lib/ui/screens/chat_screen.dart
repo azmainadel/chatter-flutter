@@ -1,32 +1,21 @@
+import 'package:chatter/bloc/authentication/authentication_bloc.dart';
+import 'package:chatter/bloc/authentication/authentication_event.dart';
 import 'package:chatter/ui/components/message_bubble.dart';
 import 'package:chatter/ui/util/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 final _firestore = Firestore.instance;
-final _auth = FirebaseAuth.instance;
 
-FirebaseUser loggedInUser;
-
-class ChatScreen extends StatefulWidget {
-  static String id = 'chat_screen';
-
-  @override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreen extends StatelessWidget {
   final messageTextController = TextEditingController();
   String messageText;
 
-  @override
-  void initState() {
-    super.initState();
+  final String userName;
 
-    getCurrentUser();
-  }
+  ChatScreen({this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +26,9 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                _auth.signOut();
-
-                Navigator.pop(context);
+                BlocProvider.of<AuthenticationBloc>(context).add(
+                  SignedOut(),
+                );
               }),
         ],
         title: Text('Chatroom'),
@@ -50,7 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessageStream(),
+            MessageStream(signedInUserEmail: userName),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -73,7 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       messageTextController.clear();
                       _firestore.collection('messages').add({
                         'text': messageText,
-                        'sender': loggedInUser.email,
+                        'sender': userName,
                         'timestamp': DateTime.now().millisecondsSinceEpoch
                       });
                     },
@@ -90,21 +79,13 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-
-  void getCurrentUser() async {
-    try {
-      final user = await _auth.currentUser();
-
-      if (user != null) {
-        loggedInUser = user;
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 }
 
 class MessageStream extends StatelessWidget {
+  String signedInUserEmail;
+
+  MessageStream({this.signedInUserEmail});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -121,7 +102,7 @@ class MessageStream extends StatelessWidget {
             final messageText = message.data['text'];
             final messageSender = message.data['sender'];
             final messageTime = message.data['timestamp'];
-            final currentUser = loggedInUser.email;
+            final currentUser = signedInUserEmail;
 
             final messageBubble = MessageBubble(
               text: messageText,
