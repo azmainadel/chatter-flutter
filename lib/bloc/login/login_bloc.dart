@@ -4,6 +4,7 @@ import 'package:chatter/data/repositories/user_repository.dart';
 import 'package:chatter/ui/util/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   UserRepository _userRepository;
@@ -54,5 +55,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (_) {
       yield LoginState.failure();
     }
+  }
+
+  @override
+  Stream<LoginState> transformEvents(Stream<LoginEvent> events,
+      Stream<LoginState> Function(LoginEvent event) next,) {
+    final nonDebounceStream = events.where((event) {
+      return (event is! EmailChanged && event is! PasswordChanged);
+    });
+    final debounceStream = events.where((event) {
+      return (event is EmailChanged || event is PasswordChanged);
+    }).debounceTime(Duration(milliseconds: 300));
+    return super.transformEvents(
+      nonDebounceStream.mergeWith([debounceStream]),
+      next,
+    );
   }
 }
