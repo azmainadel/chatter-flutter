@@ -3,7 +3,7 @@
 
  Chatter is a modern messaging app built using **Flutter**.
 
-## Componenets
+## Components
 
 - Firebase authentication
 - Animations using Flutter Hero
